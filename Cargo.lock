@@ -7,6 +7,7 @@ name = "Rust-Pong"
 version = "0.1.0"
 dependencies = [
  "ggez",
+ "glam 0.20.0",
  "nalgebra",
  "rand",
 ]
@@ -800,7 +801,7 @@ dependencies = [
  "gfx_core",
  "gfx_device_gl",
  "gilrs",
- "glam",
+ "glam 0.17.3",
  "glutin",
  "glyph_brush",
  "image",
@@ -876,6 +877,15 @@ name = "glam"
 version = "0.17.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e01732b97afd8508eee3333a541b9f7610f454bb818669e66e90f5f57c93a776"
+dependencies = [
+ "mint",
+]
+
+[[package]]
+name = "glam"
+version = "0.20.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c2c626156a479bfb5a4362c43f5abadd700af33ebc8db068089d9cb92493d6ab"
 dependencies = [
  "mint",
 ]

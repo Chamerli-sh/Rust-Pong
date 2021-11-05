@@ -2,7 +2,7 @@
 
 use ggez::{Context, ContextBuilder, GameResult};
 use ggez::graphics::{self, Color};
-use nalgebra;
+use glam;
 use ggez::event::{self, EventHandler};
 
 const RACKET_HEIGHT: f32 = 100.0;
@@ -24,8 +24,8 @@ fn main() {
 }
 
 struct MainState {
-    player_1_pos: nalgebra::Point2<f32>,    
-    player_2_pos: nalgebra::Point2<f32>,    
+    player_1_pos: glam::Vec2,    
+    player_2_pos: glam::Vec2,    
 }
 
 impl MainState {
@@ -33,8 +33,9 @@ impl MainState {
         let (screen_widht, screen_height) = graphics::drawable_size(_ctx);
         let screen_height_half = screen_height / 2.0;
         MainState {
-            player_1_pos : nalgebra::Point2::new(RACKET_WIDTH_HALF, screen_height_half),
-            player_2_pos : nalgebra::Point2::new(screen_widht - RACKET_WIDTH_HALF, screen_height_half),
+            player_1_pos : glam::Vec2::new(RACKET_WIDTH_HALF, screen_height_half),
+            // player_1_pos : glam::Vec2::new(20.0, 20.0),
+            player_2_pos : glam::Vec2::new(screen_widht - RACKET_WIDTH_HALF, screen_height_half),
         }
     }
 }
@@ -49,9 +50,14 @@ impl EventHandler<ggez::GameError> for MainState {
         
         let racket_rect = graphics::Rect::new(-RACKET_WIDTH_HALF, -RACKET_HEIGHT_HALF, RACKET_WIDTH, RACKET_HEIGHT);
         let racket_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), racket_rect, Color::WHITE)?;
+
+        graphics::draw(
+            ctx,
+            &racket_mesh,
+            graphics::DrawParam::new()
+                .dest(self.player_1_pos),
+        )?;
         
-        let draw_param = graphics::DrawParam::default();
-        graphics::draw(ctx, &racket_mesh, graphics::DrawParam::default())?;
 
         graphics::present(ctx)
     }
