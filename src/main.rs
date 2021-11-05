@@ -4,6 +4,7 @@ use ggez::{Context, ContextBuilder, GameResult};
 use ggez::graphics::{self, Color};
 use glam;
 use ggez::event::{self, EventHandler};
+use ggez::input::keyboard::{self, KeyCode};
 
 const RACKET_HEIGHT: f32 = 100.0;
 const RACKET_HEIGHT_HALF: f32 = RACKET_HEIGHT / 2.0;
@@ -43,7 +44,11 @@ impl MainState {
 }
 impl EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
-        // Update code here...
+        if keyboard::is_key_pressed(_ctx, KeyCode::W) {
+            self.player_1_pos += glam::Vec2::new(0.0, -1.0);
+        } if keyboard::is_key_pressed(_ctx, KeyCode::S) {
+            self.player_1_pos += glam::Vec2::new(0.0, 1.0);
+        }
         Ok(())
     }
 
