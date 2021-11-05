@@ -9,7 +9,8 @@ const RACKET_HEIGHT: f32 = 100.0;
 const RACKET_HEIGHT_HALF: f32 = RACKET_HEIGHT / 2.0;
 const RACKET_WIDTH: f32 = 20.0;
 const RACKET_WIDTH_HALF: f32 = RACKET_WIDTH / 2.0;
-
+const BALL_SIZE: f32 = 30.0;
+const BALL_SIZE_HALF: f32 = 30.0 / 2.0;
 
 
 fn main() {
@@ -34,7 +35,6 @@ impl MainState {
         let screen_height_half = screen_height / 2.0;
         MainState {
             player_1_pos : glam::Vec2::new(RACKET_WIDTH_HALF, screen_height_half),
-            // player_1_pos : glam::Vec2::new(20.0, 20.0),
             player_2_pos : glam::Vec2::new(screen_widht - RACKET_WIDTH_HALF, screen_height_half),
         }
     }
@@ -51,11 +51,14 @@ impl EventHandler<ggez::GameError> for MainState {
         let racket_rect = graphics::Rect::new(-RACKET_WIDTH_HALF, -RACKET_HEIGHT_HALF, RACKET_WIDTH, RACKET_HEIGHT);
         let racket_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), racket_rect, Color::WHITE)?;
 
-        graphics::draw(
-            ctx,
-            &racket_mesh,
+        graphics::draw(ctx, &racket_mesh,
             graphics::DrawParam::new()
                 .dest(self.player_1_pos),
+        )?;
+
+        graphics::draw(ctx, &racket_mesh,
+            graphics::DrawParam::new()
+                .dest(self.player_2_pos),
         )?;
         
 
