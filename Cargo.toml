@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 ggez = "0.6.1"
 nalgebra = "0.29.0"
-glam = { version = "0.20.0", features = ["mint"] }
+glam = { version = "0.20.0", features = ["mint", "libm"] }
 rand = "0.8.4"

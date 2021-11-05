@@ -27,15 +27,17 @@ fn main() {
 struct MainState {
     player_1_pos: glam::Vec2,    
     player_2_pos: glam::Vec2,    
+    ball_pos: glam::Vec2,
 }
 
 impl MainState {
     pub fn new(_ctx: &mut Context) -> MainState {
         let (screen_widht, screen_height) = graphics::drawable_size(_ctx);
-        let screen_height_half = screen_height / 2.0;
+        let (screen_widht_half, screen_height_half) = (screen_widht / 2.0, screen_height / 2.0);
         MainState {
             player_1_pos : glam::Vec2::new(RACKET_WIDTH_HALF, screen_height_half),
             player_2_pos : glam::Vec2::new(screen_widht - RACKET_WIDTH_HALF, screen_height_half),
+            ball_pos : glam::Vec2::new(screen_widht_half, screen_height_half),
         }
     }
 }
@@ -51,14 +53,25 @@ impl EventHandler<ggez::GameError> for MainState {
         let racket_rect = graphics::Rect::new(-RACKET_WIDTH_HALF, -RACKET_HEIGHT_HALF, RACKET_WIDTH, RACKET_HEIGHT);
         let racket_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), racket_rect, Color::WHITE)?;
 
+        let ball_rect = graphics::Rect::new(-BALL_SIZE_HALF, -BALL_SIZE, BALL_SIZE, BALL_SIZE);
+        let ball_mesh = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), ball_rect, Color::WHITE)?;
+
+        // Player 1
         graphics::draw(ctx, &racket_mesh,
             graphics::DrawParam::new()
                 .dest(self.player_1_pos),
         )?;
-
+        
+        // Player 2
         graphics::draw(ctx, &racket_mesh,
             graphics::DrawParam::new()
                 .dest(self.player_2_pos),
+        )?;
+        
+        // The Ball
+        graphics::draw(ctx, &ball_mesh,
+            graphics::DrawParam::new()
+                .dest(self.ball_pos),
         )?;
         
 
