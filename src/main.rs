@@ -74,6 +74,7 @@ impl EventHandler<ggez::GameError> for MainState {
         movement(_ctx, delta, &mut self.player_2_pos, [KeyCode::Up, KeyCode::Down]);
 
         clamp(&mut self.player_1_pos.y, RACKET_HEIGHT_HALF, screen_h-RACKET_HEIGHT_HALF);
+        clamp(&mut self.player_2_pos.y, RACKET_HEIGHT_HALF, screen_h-RACKET_HEIGHT_HALF);
 
         Ok(())
     }
