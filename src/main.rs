@@ -6,6 +6,7 @@ use glam;
 use ggez::event::{self, EventHandler};
 use ggez::input::keyboard::{self, KeyCode};
 
+
 const RACKET_HEIGHT: f32 = 100.0;
 const RACKET_HEIGHT_HALF: f32 = RACKET_HEIGHT / 2.0;
 const RACKET_WIDTH: f32 = 20.0;
@@ -41,8 +42,11 @@ struct MainState {
     player_1_pos: glam::Vec2,    
     player_2_pos: glam::Vec2,    
     ball_pos: glam::Vec2,
+    ball_vel: glam::Vec2,
 }
 fn movement(ctx: &mut Context, delta: f32, object: &mut glam::Vec2, keycode: [KeyCode; 2]) {
+
+    let screen_h = graphics::drawable_size(ctx).1;
 
     if keyboard::is_key_pressed(ctx, keycode[0]) {
         object.y += -PLAYER_SPEED * delta;
@@ -50,8 +54,9 @@ fn movement(ctx: &mut Context, delta: f32, object: &mut glam::Vec2, keycode: [Ke
         object.y += PLAYER_SPEED * delta;
     }
 
-}
+    clamp(&mut object.y, RACKET_HEIGHT_HALF, screen_h-RACKET_HEIGHT_HALF);
 
+}
 impl MainState {
     pub fn new(_ctx: &mut Context) -> MainState {
         let (screen_widht, screen_height) = graphics::drawable_size(_ctx);
@@ -60,6 +65,7 @@ impl MainState {
             player_1_pos : glam::Vec2::new(RACKET_WIDTH_HALF, screen_height_half),
             player_2_pos : glam::Vec2::new(screen_widht - RACKET_WIDTH_HALF, screen_height_half),
             ball_pos : glam::Vec2::new(screen_widht_half, screen_height_half),
+            ball_vel : glam::Vec2::new(10.0, 5.0),
         }
     }
 }
@@ -67,15 +73,11 @@ impl EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
         
         let delta = ggez::timer::delta(_ctx).as_secs_f32();
-        let screen_h = graphics::drawable_size(_ctx).1;
-
 
         movement(_ctx, delta, &mut self.player_1_pos, [KeyCode::W, KeyCode::S]);
         movement(_ctx, delta, &mut self.player_2_pos, [KeyCode::Up, KeyCode::Down]);
-
-        clamp(&mut self.player_1_pos.y, RACKET_HEIGHT_HALF, screen_h-RACKET_HEIGHT_HALF);
-        clamp(&mut self.player_2_pos.y, RACKET_HEIGHT_HALF, screen_h-RACKET_HEIGHT_HALF);
-
+        
+        self.ball_pos += self.ball_vel * delta;
         Ok(())
     }
 
