@@ -26,6 +26,9 @@ fn main() {
     event::run(ctx, event_loop, state);
 }
 
+
+
+
 fn clamp(value: &mut f32, low: f32, height: f32) {
     if *value < low {
         *value = low;
@@ -38,6 +41,15 @@ struct MainState {
     player_1_pos: glam::Vec2,    
     player_2_pos: glam::Vec2,    
     ball_pos: glam::Vec2,
+}
+fn movement(ctx: &mut Context, delta: f32, object: &mut glam::Vec2, keycode: [KeyCode; 2]) {
+
+    if keyboard::is_key_pressed(ctx, keycode[0]) {
+        object.y += -PLAYER_SPEED * delta;
+    } if keyboard::is_key_pressed(ctx, keycode[1]) {
+        object.y += PLAYER_SPEED * delta;
+    }
+
 }
 
 impl MainState {
@@ -55,15 +67,13 @@ impl EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
         
         let delta = ggez::timer::delta(_ctx).as_secs_f32();
-
         let screen_h = graphics::drawable_size(_ctx).1;
 
-        if keyboard::is_key_pressed(_ctx, KeyCode::W) {
-            self.player_1_pos.y += -PLAYER_SPEED * delta;
-        } if keyboard::is_key_pressed(_ctx, KeyCode::S) {
-            self.player_1_pos.y += PLAYER_SPEED * delta;
-        }
+
+        movement(_ctx, delta, &mut self.player_1_pos, [KeyCode::W, KeyCode::S]);
+
         clamp(&mut self.player_1_pos.y, RACKET_HEIGHT_HALF, screen_h-RACKET_HEIGHT_HALF);
+
         Ok(())
     }
 
